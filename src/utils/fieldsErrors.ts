@@ -1,4 +1,4 @@
-export function fieldsErrors(keys: { [key: string]: string | number | any[] }) {
+export function fieldsErrors(keys: { [key: string]: string | number | any }) {
   const nullableKeys = Object.keys(keys);
 
   let errorsObj = {};

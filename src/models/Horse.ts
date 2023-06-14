@@ -22,7 +22,7 @@ export class Horse {
   @Column()
   description: string;
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'date' })
   birthdate: Date;
 
   @Column()
@@ -51,4 +51,13 @@ export class Horse {
 
   @UpdateDateColumn({ type: 'timestamptz', generated: true })
   updated_at: string;
+
+  toJSON() {
+    return {
+      ...this,
+      uuidcolor: undefined,
+      uuidpace: undefined,
+      uuidrace: undefined,
+    };
+  }
 }
