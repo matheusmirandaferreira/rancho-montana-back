@@ -23,7 +23,7 @@ export class Horse {
   description: string;
 
   @Column({ type: 'date' })
-  birthdate: Date;
+  birthdate: string;
 
   @Column()
   uuidrace: string;

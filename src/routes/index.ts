@@ -45,5 +45,7 @@ routes.delete('/api/race/:uuid', authMiddleware, new RaceController().delete);
 
 routes.post('/api/horse/create', authMiddleware, new HorseController().create);
 routes.get('/api/horse', authMiddleware, new HorseController().list);
+routes.put('/api/horse/:uuid/edit', authMiddleware, new HorseController().edit);
+routes.delete('/api/horse/:uuid', authMiddleware, new HorseController().delete);
 
 export { routes };

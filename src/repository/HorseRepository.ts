@@ -1,3 +1,4 @@
+import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Color } from '../models/Color';
 import { Horse } from '../models/Horse';
@@ -23,6 +24,58 @@ export class HorseRepository {
     });
 
     return Object({ status: '00', data });
+  }
+
+  async edit(props: Partial<Horse>) {
+    const {
+      birthdate,
+      uuidhorse,
+      uuidcolor,
+      uuidpace,
+      uuidrace,
+      nmhorse,
+      description,
+    } = props;
+
+    if (!validate(uuidhorse)) return new Error('Informe um uuid válido');
+
+    const horse = await repo.findOneBy({ uuidhorse });
+
+    if (!horse) return new Error('Cavalo não encontrado');
+
+    if (birthdate)
+      horse.birthdate = new Date(
+        birthdate.split('/').reverse().join('-')
+      ).toISOString();
+
+    if (uuidcolor) horse.uuidcolor = uuidcolor;
+
+    if (uuidpace) horse.uuidpace = uuidpace;
+
+    if (uuidrace) horse.uuidrace = uuidrace;
+
+    if (nmhorse) horse.nmhorse = nmhorse;
+
+    if (description) horse.description = description;
+
+    await repo.save(horse);
+
+    return Object({ status: '00', data: horse.toJSON() });
+  }
+
+  async delete({ uuidhorse }: Pick<Horse, 'uuidhorse'>) {
+    if (!uuidhorse)
+      return new Error('Erro de validação', {
+        cause: fieldsErrors({ uuidhorse }),
+      });
+
+    const horse = await repo.findOneBy({ uuidhorse });
+
+    if (!horse) return new Error('Cavalo não encontrado');
+
+    await repo.remove(horse);
+
+    return Object({ status: '00' });
   }
 
   async create(props: CreateHorseParams) {
@@ -51,11 +104,13 @@ export class HorseRepository {
 
     if (!color || !race || !pace)
       return new Error('Erro de validação', {
-        cause: fieldsErrors({ color, race, pace }),
+        cause: fieldsErrors({ color, race, pace }, 'UUID inválido'),
       });
 
     const horse = repo.create({
-      birthdate: new Date(birthdate).toISOString(),
+      birthdate: new Date(
+        birthdate.split('/').reverse().join('-')
+      ).toISOString(),
       nmhorse,
       uuidcolor,
       description,

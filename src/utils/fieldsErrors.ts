@@ -1,4 +1,7 @@
-export function fieldsErrors(keys: { [key: string]: string | number | any }) {
+export function fieldsErrors(
+  keys: { [key: string]: string | number | any },
+  message?: string
+) {
   const nullableKeys = Object.keys(keys);
 
   let errorsObj = {};
@@ -9,7 +12,8 @@ export function fieldsErrors(keys: { [key: string]: string | number | any }) {
     }
     if (keys[item] instanceof Array) {
       const arr = keys[item] as any[];
-      if (arr.length === 0) errorsObj[item] = `Este campo é obrigatório`;
+      if (arr.length === 0)
+        errorsObj[item] = message || `Este campo é obrigatório`;
     }
   });
 
