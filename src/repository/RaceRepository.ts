@@ -1,3 +1,4 @@
+import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Race } from '../models/Race';
 import { fieldsErrors } from '../utils/fieldsErrors';
@@ -10,6 +11,16 @@ type EditProps = {
 const repo = AppDataSource.getRepository(Race);
 
 export class RaceRepository {
+  async getRace({ uuidrace }: Pick<Race, 'uuidrace'>) {
+    if (!validate(uuidrace)) return new Error('Informe um uuid válido');
+
+    const horse = await repo.findOneBy({ uuidrace });
+
+    if (!horse) return new Error('Raça não encontrado');
+
+    return Object({ status: '00', data: horse });
+  }
+
   async create(props: Partial<Race>) {
     let { nmrace } = props;
 

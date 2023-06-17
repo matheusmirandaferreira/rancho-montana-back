@@ -4,6 +4,19 @@ import { HorseRepository } from '../repository/HorseRepository';
 const repo = new HorseRepository();
 
 export class HorseController {
+  async getHorse(req: Request, res: Response) {
+    const { uuid: uuidhorse } = req.params;
+
+    const result = await repo.getHorse({ uuidhorse });
+
+    if (result instanceof Error)
+      return res
+        .status(422)
+        .json({ message: result.message, errors: result.cause });
+
+    return res.json(result);
+  }
+
   async list(req: Request, res: Response) {
     const result = await repo.list();
 

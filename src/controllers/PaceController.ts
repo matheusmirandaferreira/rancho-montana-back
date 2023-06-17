@@ -4,6 +4,19 @@ import { PaceRepository } from '../repository/PaceRepository';
 const repo = new PaceRepository();
 
 export class PaceController {
+  async getPace(req: Request, res: Response) {
+    const { uuid: uuidpace } = req.params;
+
+    const result = await repo.getPace({ uuidpace });
+
+    if (result instanceof Error)
+      return res
+        .status(422)
+        .json({ message: result.message, errors: result.cause });
+
+    return res.json(result);
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { nmpace } = req.body;

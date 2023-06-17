@@ -26,9 +26,19 @@ type EditUserParams = {
   oldpassword: string;
 };
 
-const userRepository = AppDataSource.getRepository(User);
+const repo = AppDataSource.getRepository(User);
 
 export class UserRepository {
+  async getUser({ uuiduser }: Pick<User, 'uuiduser'>) {
+    if (!validate(uuiduser)) return new Error('Informe um uuid válido');
+
+    const user = await repo.findOneBy({ uuiduser });
+
+    if (!user) return new Error('Usuário não encontrado');
+
+    return Object({ status: '00', data: user });
+  }
+
   async login({ email, password }: LoginParams): Promise<Error | User> {
     if (!email || !password) {
       return new Error('Preencha todos os campos', {
@@ -36,7 +46,7 @@ export class UserRepository {
       });
     }
 
-    const user = await userRepository.findOneBy({ email });
+    const user = await repo.findOneBy({ email });
 
     if (!user) return new Error('Usuário não encontrado');
 
@@ -67,19 +77,19 @@ export class UserRepository {
       });
     }
 
-    if ((await userRepository.findBy({ email })).length > 0) {
+    if ((await repo.findBy({ email })).length > 0) {
       return new Error('Usuário já existe');
     }
 
-    const user = userRepository.create({ nmuser, email, password });
+    const user = repo.create({ nmuser, email, password });
 
-    await userRepository.save(user);
+    await repo.save(user);
 
     return Object({ status: '00', data: user });
   }
 
   async getUsers(): Promise<Error | User[]> {
-    const users = await userRepository.find();
+    const users = await repo.find();
 
     return Object({
       status: '00',
@@ -92,7 +102,7 @@ export class UserRepository {
 
     if (!validate(uuiduser)) return new Error('Informe um uuid válido');
 
-    const user = await userRepository.findOneBy({ uuiduser });
+    const user = await repo.findOneBy({ uuiduser });
 
     if (!user) return new Error('Usuário não existe');
 
@@ -121,7 +131,7 @@ export class UserRepository {
       });
     }
 
-    await userRepository.save(user);
+    await repo.save(user);
 
     return Object({
       status: '00',

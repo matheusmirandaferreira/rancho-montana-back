@@ -1,3 +1,4 @@
+import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Pace } from '../models/Pace';
 import { fieldsErrors } from '../utils/fieldsErrors';
@@ -10,6 +11,16 @@ type EditProps = {
 const repo = AppDataSource.getRepository(Pace);
 
 export class PaceRepository {
+  async getPace({ uuidpace }: Pick<Pace, 'uuidpace'>) {
+    if (!validate(uuidpace)) return new Error('Informe um uuid válido');
+
+    const pace = await repo.findOneBy({ uuidpace });
+
+    if (!pace) return new Error('Andamento não encontrado');
+
+    return Object({ status: '00', data: pace });
+  }
+
   async create(props: Partial<Pace>) {
     let { nmpace } = props;
 

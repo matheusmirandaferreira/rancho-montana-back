@@ -5,17 +5,40 @@ import { UserRepository } from '../repository/UserRepository';
 const repo = new UserRepository();
 
 export class UserController {
+  async getUser(req: Request, res: Response) {
+    try {
+      const { uuid: uuiduser } = req.params;
+
+      const result = await repo.getUser({ uuiduser });
+
+      if (result instanceof Error)
+        return res
+          .status(400)
+          .json({ message: result.message, errors: result.cause });
+
+      return res.json(result);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: err.message });
+    }
+  }
+
   async login(req: Request, res: Response) {
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const result = await repo.login({ email, password });
+      const result = await repo.login({ email, password });
 
-    if (result instanceof Error)
-      return res
-        .status(400)
-        .json({ message: result.message, errors: result.cause });
+      if (result instanceof Error)
+        return res
+          .status(400)
+          .json({ message: result.message, errors: result.cause });
 
-    return res.json(result);
+      return res.json(result);
+    } catch (err) {
+      console.log('Login ERR', err);
+      return res.status(500).json({ message: err.message });
+    }
   }
 
   async createUser(req: Request, res: Response) {

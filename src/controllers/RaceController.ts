@@ -4,6 +4,19 @@ import { RaceRepository } from '../repository/RaceRepository';
 const repo = new RaceRepository();
 
 export class RaceController {
+  async getRace(req: Request, res: Response) {
+    const { uuid: uuidrace } = req.params;
+
+    const result = await repo.getRace({ uuidrace });
+
+    if (result instanceof Error)
+      return res
+        .status(422)
+        .json({ message: result.message, errors: result.cause });
+
+    return res.json(result);
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { nmrace } = req.body;

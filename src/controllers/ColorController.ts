@@ -4,6 +4,19 @@ import { ColorRepository } from '../repository/ColorRepository';
 const repo = new ColorRepository();
 
 export class ColorController {
+  async getColor(req: Request, res: Response) {
+    const { uuid: uuidcolor } = req.params;
+
+    const result = await repo.getColor({ uuidcolor });
+
+    if (result instanceof Error)
+      return res
+        .status(422)
+        .json({ message: result.message, errors: result.cause });
+
+    return res.json(result);
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { nmcolor } = req.body;

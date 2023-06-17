@@ -1,3 +1,4 @@
+import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Color } from '../models/Color';
 import { fieldsErrors } from '../utils/fieldsErrors';
@@ -10,6 +11,16 @@ type EditProps = {
 const repo = AppDataSource.getRepository(Color);
 
 export class ColorRepository {
+  async getColor({ uuidcolor }: Pick<Color, 'uuidcolor'>) {
+    if (!validate(uuidcolor)) return new Error('Informe um uuid válido');
+
+    const horse = await repo.findOneBy({ uuidcolor });
+
+    if (!horse) return new Error('Cor não encontrado');
+
+    return Object({ status: '00', data: horse });
+  }
+
   async create(props: Partial<Color>) {
     let { nmcolor } = props;
 

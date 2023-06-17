@@ -18,6 +18,19 @@ type CreateHorseParams = {
 const repo = AppDataSource.getRepository(Horse);
 
 export class HorseRepository {
+  async getHorse({ uuidhorse }: Pick<Horse, 'uuidhorse'>) {
+    if (!validate(uuidhorse)) return new Error('Informe um uuid válido');
+
+    const horse = await repo.find({
+      relations: { color: true, pace: true, race: true },
+      where: { uuidhorse },
+    });
+
+    if (!horse.length) return new Error('Cavalo não encontrado');
+
+    return Object({ status: '00', data: horse[0] });
+  }
+
   async list() {
     const data = await repo.find({
       relations: { color: true, pace: true, race: true },
