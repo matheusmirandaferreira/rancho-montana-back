@@ -5,3 +5,8 @@ build/
 tmp/
 temp/
 .env
+
+storage/public/*.jpg
+storage/public/*.svg
+storage/public/*.jpeg
+storage/public/*.png

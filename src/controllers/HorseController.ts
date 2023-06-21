@@ -1,9 +1,25 @@
 import { Request, Response } from 'express';
 import { HorseRepository } from '../repository/HorseRepository';
+import { uploadsMiddleware } from '../middleware/uploadMiddleware';
+import multer from 'multer';
 
 const repo = new HorseRepository();
 
+const upload = uploadsMiddleware.single('image');
+
 export class HorseController {
+  async addImage(req: Request, res: Response) {
+    upload(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        return res.status(422).json({ message: err.message });
+      } else if (err) {
+        return res.status(500).json({ message: err.message });
+      } else {
+        return res.json({ status: '00' });
+      }
+    });
+  }
+
   async getHorse(req: Request, res: Response) {
     const { uuid: uuidhorse } = req.params;
 
