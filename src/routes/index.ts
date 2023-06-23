@@ -49,7 +49,7 @@ routes.delete('/api/race/:uuid', authMiddleware, new RaceController().delete);
 
 routes.get('/api/horse', new HorseController().list);
 routes.get('/api/horse/:uuid', new HorseController().getHorse);
-routes.post('/api/horse/:uuid/image', new HorseController().addImage);
+routes.post('/api/horse/:uuid/image', new HorseController().uploadImage);
 routes.post('/api/horse/create', authMiddleware, new HorseController().create);
 routes.put('/api/horse/:uuid/edit', authMiddleware, new HorseController().edit);
 routes.delete('/api/horse/:uuid', authMiddleware, new HorseController().delete);

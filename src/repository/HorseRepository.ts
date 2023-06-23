@@ -5,6 +5,7 @@ import { Horse } from '../models/Horse';
 import { Pace } from '../models/Pace';
 import { Race } from '../models/Race';
 import { fieldsErrors } from '../utils/fieldsErrors';
+import { uploadsMiddleware } from '../middleware/uploadMiddleware';
 
 type CreateHorseParams = {
   uuidcolor: string;
@@ -17,7 +18,13 @@ type CreateHorseParams = {
 
 const repo = AppDataSource.getRepository(Horse);
 
+const upload = uploadsMiddleware.single('image');
+
 export class HorseRepository {
+  async uploadImage({ req, res, controller }) {
+    upload(req, res, controller);
+  }
+
   async getHorse({ uuidhorse }: Pick<Horse, 'uuidhorse'>) {
     if (!validate(uuidhorse)) return new Error('Informe um uuid válido');
 

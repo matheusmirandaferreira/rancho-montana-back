@@ -2,6 +2,7 @@ import multer from 'multer';
 import { AppDataSource } from '../data-source';
 import { Horse } from '../models/Horse';
 import { validate } from 'uuid';
+import { readdirSync, unlink } from 'fs';
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -9,20 +10,35 @@ const storage = multer.diskStorage({
   },
 
   filename: async (req, file, callback) => {
-    const { uuid: uuidhorse } = req.params;
+    try {
+      const { uuid: uuidhorse } = req.params;
 
-    if (!validate(uuidhorse)) callback(new Error('Informe um uuid válido'), '');
+      if (!validate(uuidhorse))
+        callback(new Error('Informe um uuid válido'), '');
 
-    const horse = await AppDataSource.createQueryBuilder(Horse, 'horse')
-      .select()
-      .where('horse.uuidhorse = :uuidhorse', { uuidhorse })
-      .getExists();
+      const files = readdirSync('storage/public/').filter((fn) =>
+        fn.startsWith(uuidhorse)
+      );
 
-    if (!horse) {
-      console.log('errou');
-      callback(new Error('Cavalo não encontrado'), '');
-    } else {
-      callback(null, uuidhorse + '-' + file.originalname);
+      files.forEach((item) => {
+        unlink('storage/public/' + item, (err) => {
+          if (err)
+            callback(new Error('Houve um erro ao adicionar a imagem'), '');
+        });
+      });
+
+      const horse = await AppDataSource.createQueryBuilder(Horse, 'horse')
+        .select()
+        .where('horse.uuidhorse = :uuidhorse', { uuidhorse })
+        .getExists();
+
+      if (!horse) {
+        callback(new Error('Cavalo não encontrado'), '');
+      } else {
+        callback(null, uuidhorse + '-' + file.originalname);
+      }
+    } catch (err) {
+      callback(new Error('Houve um erro ao adicionar a imagem'), '');
     }
   },
 });

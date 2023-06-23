@@ -8,8 +8,8 @@ const repo = new HorseRepository();
 const upload = uploadsMiddleware.single('image');
 
 export class HorseController {
-  async addImage(req: Request, res: Response) {
-    upload(req, res, (err) => {
+  async uploadImage(req: Request, res: Response) {
+    const controller = (err) => {
       if (err instanceof multer.MulterError) {
         return res.status(422).json({ message: err.message });
       } else if (err) {
@@ -17,7 +17,9 @@ export class HorseController {
       } else {
         return res.json({ status: '00' });
       }
-    });
+    };
+
+    repo.uploadImage({ req, res, controller });
   }
 
   async getHorse(req: Request, res: Response) {
