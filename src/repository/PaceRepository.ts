@@ -2,6 +2,7 @@ import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Pace } from '../models/Pace';
 import { fieldsErrors } from '../utils/fieldsErrors';
+import { normalizeDiacritics, normalizeWhiteSpaces } from 'normalize-text';
 
 type EditProps = {
   uuid: string;
@@ -24,7 +25,7 @@ export class PaceRepository {
   async create(props: Partial<Pace>) {
     let { nmpace } = props;
 
-    nmpace = nmpace.trim();
+    nmpace = normalizeWhiteSpaces(nmpace);
 
     if (!nmpace)
       return new Error('Informe um nome válido', {
@@ -32,6 +33,13 @@ export class PaceRepository {
       });
 
     if (await repo.findOneBy({ nmpace }))
+      return new Error('Andamento já cadastrado!');
+
+    const permalink = normalizeDiacritics(nmpace)
+      .toLowerCase()
+      .replaceAll(' ', '_');
+
+    if (await repo.findOneBy({ pace_permalink: permalink }))
       return new Error('Andamento já cadastrado!');
 
     const pace = repo.create({ nmpace });

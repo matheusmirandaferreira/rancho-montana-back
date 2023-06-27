@@ -10,3 +10,7 @@ storage/public/*.jpg
 storage/public/*.svg
 storage/public/*.jpeg
 storage/public/*.png
+
+.flaskenv*
+!.env.project
+!.env.vault

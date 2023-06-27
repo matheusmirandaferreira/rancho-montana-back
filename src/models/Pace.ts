@@ -17,6 +17,9 @@ export class Pace {
   @Column({ unique: true })
   nmpace: string;
 
+  @Column({ unique: true })
+  pace_permalink: string;
+
   @OneToMany(() => Horse, (horse) => horse.color, {
     cascade: true,
     onDelete: 'CASCADE',

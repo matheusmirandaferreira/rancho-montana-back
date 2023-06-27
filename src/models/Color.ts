@@ -17,6 +17,9 @@ export class Color {
   @Column({ unique: true })
   nmcolor: string;
 
+  @Column({ unique: true })
+  color_permalink: string;
+
   @OneToMany(() => Horse, (horse) => horse.color, {
     cascade: true,
     onDelete: 'CASCADE',

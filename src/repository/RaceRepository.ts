@@ -2,6 +2,7 @@ import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Race } from '../models/Race';
 import { fieldsErrors } from '../utils/fieldsErrors';
+import { normalizeDiacritics, normalizeWhiteSpaces } from 'normalize-text';
 
 type EditProps = {
   uuid: string;
@@ -24,7 +25,7 @@ export class RaceRepository {
   async create(props: Partial<Race>) {
     let { nmrace } = props;
 
-    nmrace = nmrace.trim();
+    nmrace = normalizeWhiteSpaces(nmrace);
 
     if (!nmrace)
       return new Error('Informe um nome válido', {
@@ -33,6 +34,13 @@ export class RaceRepository {
 
     if (await repo.findOneBy({ nmrace }))
       return new Error('Raça já cadastrado!');
+
+    const permalink = normalizeDiacritics(nmrace)
+      .toLowerCase()
+      .replaceAll(' ', '_');
+
+    if (await repo.findOneBy({ race_permalink: permalink }))
+      return new Error('Raça já cadastrada!');
 
     const pace = repo.create({ nmrace });
 

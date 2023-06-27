@@ -2,6 +2,7 @@ import { validate } from 'uuid';
 import { AppDataSource } from '../data-source';
 import { Color } from '../models/Color';
 import { fieldsErrors } from '../utils/fieldsErrors';
+import { normalizeDiacritics, normalizeWhiteSpaces } from 'normalize-text';
 
 type EditProps = {
   uuid: string;
@@ -24,7 +25,7 @@ export class ColorRepository {
   async create(props: Partial<Color>) {
     let { nmcolor } = props;
 
-    nmcolor = nmcolor.trim();
+    nmcolor = normalizeWhiteSpaces(nmcolor);
 
     if (!nmcolor)
       return new Error('Informe um nome válido', {
@@ -32,19 +33,26 @@ export class ColorRepository {
       });
 
     if (await repo.findOneBy({ nmcolor }))
-      return new Error('Andamento já cadastrado!');
+      return new Error('Cor já cadastrada!');
 
-    const pace = repo.create({ nmcolor });
+    const permalink = normalizeDiacritics(nmcolor)
+      .toLowerCase()
+      .replaceAll(' ', '_');
 
-    await repo.save(pace);
+    if (await repo.findOneBy({ color_permalink: permalink }))
+      return new Error('Cor já cadastrada!');
 
-    return Object({ status: '00', data: pace });
+    const color = repo.create({ nmcolor, color_permalink: permalink });
+
+    await repo.save(color);
+
+    return Object({ status: '00', data: color });
   }
 
   async list() {
-    const paces = await repo.find();
+    const colors = await repo.find();
 
-    return Object({ status: '00', data: paces });
+    return Object({ status: '00', data: colors });
   }
 
   async edit(props: EditProps) {
@@ -57,25 +65,25 @@ export class ColorRepository {
         cause: fieldsErrors({ nmcolor }),
       });
 
-    const pace = await repo.findOneBy({ uuidcolor });
+    const color = await repo.findOneBy({ uuidcolor });
 
-    if (!pace) return new Error('Cor não encontrada');
+    if (!color) return new Error('Cor não encontrada');
 
-    pace.nmcolor = nmcolor;
+    color.nmcolor = nmcolor;
 
-    await repo.save(pace);
+    await repo.save(color);
 
-    return Object({ status: '00', data: pace });
+    return Object({ status: '00', data: color });
   }
 
   async delete({ uuid: uuidcolor }: Pick<EditProps, 'uuid'>) {
     if (!uuidcolor) return new Error('Informe um uuid válido');
 
-    const pace = await repo.findOneBy({ uuidcolor });
+    const color = await repo.findOneBy({ uuidcolor });
 
-    if (!pace) return new Error('Cor não encontrada');
+    if (!color) return new Error('Cor não encontrada');
 
-    await repo.remove(pace);
+    await repo.remove(color);
 
     return Object({ status: '00' });
   }

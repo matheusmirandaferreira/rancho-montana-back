@@ -10,6 +10,7 @@ import {
 import { Race } from './Race';
 import { Color } from './Color';
 import { Pace } from './Pace';
+import { readdirSync } from 'fs';
 
 @Entity()
 export class Horse {
@@ -22,6 +23,15 @@ export class Horse {
   @Column()
   description: string;
 
+  /** Muar ou equino */
+  @Column()
+  category: string;
+
+  /** M ou F */
+  @Column()
+  gender: string;
+
+  /** yyyy-mm-dd */
   @Column({ type: 'date' })
   birthdate: string;
 
@@ -58,6 +68,12 @@ export class Horse {
       uuidcolor: undefined,
       uuidpace: undefined,
       uuidrace: undefined,
+      image:
+        readdirSync('storage/public/')
+          .filter((fn) => fn.startsWith(this.uuidhorse))
+          .map(
+            (image) => `${process.env.APP_BASE_URL}/storage/public/${image}`
+          )[0] || false,
     };
   }
 }
