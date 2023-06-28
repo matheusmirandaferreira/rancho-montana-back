@@ -93,8 +93,16 @@ export class HorseController {
 
   async create(req: Request, res: Response) {
     try {
-      const { birthdate, nmhorse, uuidcolor, uuidpace, uuidrace, description } =
-        req.body;
+      const {
+        birthdate,
+        nmhorse,
+        uuidcolor,
+        uuidpace,
+        uuidrace,
+        uuidcategory,
+        description,
+        gender,
+      } = req.body;
 
       const result = await repo.create({
         birthdate,
@@ -102,7 +110,9 @@ export class HorseController {
         uuidcolor,
         uuidpace,
         uuidrace,
+        uuidcategory,
         description,
+        gender,
       });
 
       if (result instanceof Error)

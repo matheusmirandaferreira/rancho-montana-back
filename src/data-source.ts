@@ -1,14 +1,16 @@
 import 'reflect-metadata';
 
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './models/User';
 import { User1686355233019 } from './migratinos/1686355233019-User';
 import { Pace } from './models/Pace';
 import { Race } from './models/Race';
 import { Color } from './models/Color';
 import { Horse } from './models/Horse';
+import { SeederOptions } from 'typeorm-extension';
+import { Category } from './models/Category';
 
-export const AppDataSource = new DataSource({
+const options: DataSourceOptions & SeederOptions = {
   type: process.env.DB_CONNECTION as any,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT as unknown as number,
@@ -16,7 +18,11 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   synchronize: true,
-  entities: [User, Pace, Race, Color, Horse],
+  entities: [User, Pace, Race, Color, Horse, Category],
   migrations: [User1686355233019],
   migrationsTableName: process.env.DB_MIGRATION_TABLE_NAME,
-});
+  seeds: ['src/database/seeds/**/*{.ts,.js}'],
+  factories: ['src/database/factories/**/*{.ts,.js}'],
+};
+
+export const AppDataSource = new DataSource(options);

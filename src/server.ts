@@ -3,13 +3,14 @@ import express from 'express';
 
 import { routes } from './routes';
 import { AppDataSource } from './data-source';
+import { runSeeders } from 'typeorm-extension';
 
 const app = express();
 
 app.use('/', routes);
 
 const main = () =>
-  Promise.resolve(AppDataSource.initialize())
+  Promise.all([AppDataSource.initialize(), runSeeders(AppDataSource)])
     .then(() => console.log('Database started successfully'))
     .catch((err) => console.log('Error on start database', err));
 

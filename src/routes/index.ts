@@ -6,6 +6,7 @@ import { PaceController } from '../controllers/PaceController';
 import { ColorController } from '../controllers/ColorController';
 import { RaceController } from '../controllers/RaceController';
 import { HorseController } from '../controllers/HorseController';
+import { CategoryController } from '../controllers/CategoryController';
 
 const routes = Router();
 
@@ -53,5 +54,7 @@ routes.post('/api/horse/:uuid/image', new HorseController().uploadImage);
 routes.post('/api/horse/create', authMiddleware, new HorseController().create);
 routes.put('/api/horse/:uuid/edit', authMiddleware, new HorseController().edit);
 routes.delete('/api/horse/:uuid', authMiddleware, new HorseController().delete);
+
+routes.get('/api/category', authMiddleware, new CategoryController().list);
 
 export { routes };

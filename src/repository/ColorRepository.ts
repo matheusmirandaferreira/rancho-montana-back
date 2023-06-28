@@ -69,7 +69,15 @@ export class ColorRepository {
 
     if (!color) return new Error('Cor não encontrada');
 
+    const permalink = normalizeDiacritics(nmcolor)
+      .toLowerCase()
+      .replaceAll(' ', '_');
+
+    if (!(await repo.findOneBy({ color_permalink: permalink })))
+      return new Error('Cor não encontrada!');
+
     color.nmcolor = nmcolor;
+    color.color_permalink = permalink;
 
     await repo.save(color);
 

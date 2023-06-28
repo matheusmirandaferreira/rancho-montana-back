@@ -6,14 +6,17 @@ import { Pace } from '../models/Pace';
 import { Race } from '../models/Race';
 import { fieldsErrors } from '../utils/fieldsErrors';
 import { uploadsMiddleware } from '../middleware/uploadMiddleware';
+import { Category } from '../models/Category';
 
 type CreateHorseParams = {
   uuidcolor: string;
   uuidrace: string;
   uuidpace: string;
+  uuidcategory: string;
   nmhorse: string;
   birthdate: string;
   description: string;
+  gender: 'M' | 'F';
 };
 
 const repo = AppDataSource.getRepository(Horse);
@@ -40,7 +43,7 @@ export class HorseRepository {
 
   async list() {
     const data = await repo.find({
-      relations: { color: true, pace: true, race: true },
+      relations: { color: true, pace: true, race: true, category: true },
     });
 
     return Object({ status: '00', data });
@@ -99,8 +102,16 @@ export class HorseRepository {
   }
 
   async create(props: CreateHorseParams) {
-    const { birthdate, nmhorse, uuidcolor, uuidpace, uuidrace, description } =
-      props;
+    const {
+      birthdate,
+      nmhorse,
+      uuidcolor,
+      uuidpace,
+      uuidrace,
+      description,
+      gender,
+      uuidcategory,
+    } = props;
 
     if (Object.values(props).some((i) => !i))
       return new Error('Preencha todos os campos', {
@@ -122,9 +133,22 @@ export class HorseRepository {
       .where('race.uuidrace = :uuidrace', { uuidrace })
       .getOne();
 
-    if (!color || !race || !pace)
+    const category = await AppDataSource.createQueryBuilder(
+      Category,
+      'category'
+    )
+      .select()
+      .where('category.uuidcategory = :uuidcategory', { uuidcategory })
+      .getOne();
+
+    if (!color || !race || !pace || !category)
       return new Error('Erro de validação', {
-        cause: fieldsErrors({ color, race, pace }, 'UUID inválido'),
+        cause: fieldsErrors({ color, race, pace, category }, 'UUID inválido'),
+      });
+
+    if (gender !== 'M' && gender !== 'F')
+      return new Error('Erro de validação', {
+        cause: { gender: "O genêro deve ser 'M' ou 'F'" },
       });
 
     const horse = repo.create({
@@ -136,6 +160,8 @@ export class HorseRepository {
       description,
       uuidpace,
       uuidrace,
+      uuidcategory,
+      gender,
     });
 
     await repo.save(horse);

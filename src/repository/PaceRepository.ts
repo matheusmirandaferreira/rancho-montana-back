@@ -42,7 +42,7 @@ export class PaceRepository {
     if (await repo.findOneBy({ pace_permalink: permalink }))
       return new Error('Andamento já cadastrado!');
 
-    const pace = repo.create({ nmpace });
+    const pace = repo.create({ nmpace, pace_permalink: permalink });
 
     await repo.save(pace);
 
@@ -67,9 +67,17 @@ export class PaceRepository {
 
     const pace = await repo.findOneBy({ uuidpace });
 
-    if (!pace) return new Error('Andamento não encontrado');
+    if (!pace) return new Error('Andamento não encontrado!');
+
+    const permalink = normalizeDiacritics(nmpace)
+      .toLowerCase()
+      .replaceAll(' ', '_');
+
+    if (!(await repo.findOneBy({ pace_permalink: permalink })))
+      return new Error('Andamento não encontrado!');
 
     pace.nmpace = nmpace;
+    pace.pace_permalink = permalink;
 
     await repo.save(pace);
 
@@ -81,7 +89,7 @@ export class PaceRepository {
 
     const pace = await repo.findOneBy({ uuidpace });
 
-    if (!pace) return new Error('Andamento não encontrado');
+    if (!pace) return new Error('Andamento não encontrado!');
 
     await repo.remove(pace);
 

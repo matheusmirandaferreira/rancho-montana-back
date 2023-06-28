@@ -11,6 +11,7 @@ import { Race } from './Race';
 import { Color } from './Color';
 import { Pace } from './Pace';
 import { readdirSync } from 'fs';
+import { Category } from './Category';
 
 @Entity()
 export class Horse {
@@ -25,11 +26,15 @@ export class Horse {
 
   /** Muar ou equino */
   @Column()
-  category: string;
+  uuidcategory: string;
 
   /** M ou F */
   @Column()
   gender: string;
+
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'uuidcategory' })
+  category: Category;
 
   /** yyyy-mm-dd */
   @Column({ type: 'date' })
@@ -68,6 +73,7 @@ export class Horse {
       uuidcolor: undefined,
       uuidpace: undefined,
       uuidrace: undefined,
+      uuidcategory: undefined,
       image:
         readdirSync('storage/public/')
           .filter((fn) => fn.startsWith(this.uuidhorse))

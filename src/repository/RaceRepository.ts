@@ -42,17 +42,17 @@ export class RaceRepository {
     if (await repo.findOneBy({ race_permalink: permalink }))
       return new Error('Raça já cadastrada!');
 
-    const pace = repo.create({ nmrace });
+    const race = repo.create({ nmrace, race_permalink: permalink });
 
-    await repo.save(pace);
+    await repo.save(race);
 
-    return Object({ status: '00', data: pace });
+    return Object({ status: '00', data: race });
   }
 
   async list() {
-    const paces = await repo.find();
+    const races = await repo.find();
 
-    return Object({ status: '00', data: paces });
+    return Object({ status: '00', data: races });
   }
 
   async edit(props: EditProps) {
@@ -65,25 +65,33 @@ export class RaceRepository {
         cause: fieldsErrors({ nmrace }),
       });
 
-    const pace = await repo.findOneBy({ uuidrace });
+    const race = await repo.findOneBy({ uuidrace });
 
-    if (!pace) return new Error('Raça não encontrado');
+    if (!race) return new Error('Raça não encontrada!');
 
-    pace.nmrace = nmrace;
+    const permalink = normalizeDiacritics(nmrace)
+      .toLowerCase()
+      .replaceAll(' ', '_');
 
-    await repo.save(pace);
+    if (!(await repo.findOneBy({ race_permalink: permalink })))
+      return new Error('Raça não encontrada!');
 
-    return Object({ status: '00', data: pace });
+    race.nmrace = nmrace;
+    race.race_permalink = permalink;
+
+    await repo.save(race);
+
+    return Object({ status: '00', data: race });
   }
 
   async delete({ uuid: uuidrace }: Pick<EditProps, 'uuid'>) {
     if (!uuidrace) return new Error('Informe um uuid válido');
 
-    const pace = await repo.findOneBy({ uuidrace });
+    const race = await repo.findOneBy({ uuidrace });
 
-    if (!pace) return new Error('Raça não encontrado');
+    if (!race) return new Error('Raça não encontrada!');
 
-    await repo.remove(pace);
+    await repo.remove(race);
 
     return Object({ status: '00' });
   }

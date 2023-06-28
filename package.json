@@ -5,7 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "env-cmd -f .env.$npm_config_env ts-node src/server.ts",
-    "typeorm": "env-cmd -f .env.$npm_config_env typeorm-ts-node-commonjs"
+    "typeorm": "env-cmd -f .env.$npm_config_env typeorm-ts-node-commonjs",
+    "seed": "env-cmd -f .env.$npm_config_env ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,6 +21,7 @@
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.16",
+    "typeorm-extension": "^2.8.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
