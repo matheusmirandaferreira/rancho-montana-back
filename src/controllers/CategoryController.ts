@@ -9,9 +9,11 @@ export class CategoryController {
       const result = await repo.list();
 
       if (result instanceof Error)
-        return res
-          .status(400)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(400).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {

@@ -12,7 +12,7 @@ export class PaceController {
     if (result instanceof Error)
       return res
         .status(422)
-        .json({ message: result.message, errors: result.cause });
+        .json({ status: '01', message: result.message, errors: result.cause });
 
     return res.json(result);
   }
@@ -24,9 +24,11 @@ export class PaceController {
       const result = await repo.create({ nmpace });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -39,9 +41,11 @@ export class PaceController {
       const result = await repo.list();
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -57,9 +61,11 @@ export class PaceController {
       const result = await repo.edit({ uuid, nmpace });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -74,9 +80,11 @@ export class PaceController {
       const result = await repo.delete({ uuid });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {

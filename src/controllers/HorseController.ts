@@ -30,7 +30,7 @@ export class HorseController {
     if (result instanceof Error)
       return res
         .status(422)
-        .json({ message: result.message, errors: result.cause });
+        .json({ status: '01', message: result.message, errors: result.cause });
 
     return res.json(result);
   }
@@ -58,9 +58,11 @@ export class HorseController {
       });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -78,9 +80,11 @@ export class HorseController {
       const result = await repo.delete({ uuidhorse });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -116,9 +120,11 @@ export class HorseController {
       });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {

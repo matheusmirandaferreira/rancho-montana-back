@@ -12,9 +12,11 @@ export class UserController {
       const result = await repo.getUser({ uuiduser });
 
       if (result instanceof Error)
-        return res
-          .status(400)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(400).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -30,9 +32,11 @@ export class UserController {
       const result = await repo.login({ email, password });
 
       if (result instanceof Error)
-        return res
-          .status(400)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(400).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -52,9 +56,11 @@ export class UserController {
       });
 
       if (result instanceof Error)
-        return res
-          .status(422)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(422).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json(result);
     } catch (err) {
@@ -94,9 +100,11 @@ export class UserController {
       });
 
       if (result instanceof Error)
-        return res
-          .status(400)
-          .json({ message: result.message, errors: result.cause });
+        return res.status(400).json({
+          status: '01',
+          message: result.message,
+          errors: result.cause,
+        });
 
       return res.json({ status: '00', user: result });
     } catch (err) {
