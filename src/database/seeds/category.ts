@@ -2,11 +2,11 @@ import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 import { Category } from '../../models/Category';
 
-export default class CategoriesSeeder implements Seeder {
+export default class CategorySeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {
     const repository = dataSource.getRepository(Category);
 
-    if (await repository.exist()) return;
+    if (await repository.count()) return;
 
     await repository.insert([
       {

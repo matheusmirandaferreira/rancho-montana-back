@@ -1,12 +1,13 @@
 import 'reflect-metadata';
+import cors from 'cors';
 import express from 'express';
-
 import { routes } from './routes';
 import { AppDataSource } from './data-source';
 import { runSeeders } from 'typeorm-extension';
 
 const app = express();
 
+app.use(cors());
 app.use('/', routes);
 
 const main = () =>

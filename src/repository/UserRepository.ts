@@ -48,10 +48,10 @@ export class UserRepository {
 
     const user = await repo.findOneBy({ email });
 
-    if (!user) return new Error('Usuário não encontrado');
+    if (!user) return new Error('Usuário ou senha inválido!');
 
     if (!(await bcrypt.compare(String(password), user.password)))
-      return new Error('Senha inválida');
+      return new Error('Usuário ou senha inválido!');
 
     const token = jwt.sign({ id: user.uuiduser }, process.env.SECRET, {
       expiresIn: '7d',

@@ -10,8 +10,8 @@ import {
 import { Race } from './Race';
 import { Color } from './Color';
 import { Pace } from './Pace';
-import { readdirSync } from 'fs';
 import { Category } from './Category';
+import { readdirSync } from 'fs';
 
 @Entity()
 export class Horse {

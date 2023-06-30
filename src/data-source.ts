@@ -7,8 +7,8 @@ import { Pace } from './models/Pace';
 import { Race } from './models/Race';
 import { Color } from './models/Color';
 import { Horse } from './models/Horse';
-import { SeederOptions } from 'typeorm-extension';
 import { Category } from './models/Category';
+import { SeederOptions } from 'typeorm-extension';
 
 const options: DataSourceOptions & SeederOptions = {
   type: process.env.DB_CONNECTION as any,
@@ -18,11 +18,10 @@ const options: DataSourceOptions & SeederOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   synchronize: true,
-  entities: [User, Pace, Race, Color, Horse, Category],
+  entities: [User, Pace, Race, Color, Category, Horse],
   migrations: [User1686355233019],
   migrationsTableName: process.env.DB_MIGRATION_TABLE_NAME,
   seeds: ['src/database/seeds/**/*{.ts,.js}'],
-  factories: ['src/database/factories/**/*{.ts,.js}'],
 };
 
 export const AppDataSource = new DataSource(options);
