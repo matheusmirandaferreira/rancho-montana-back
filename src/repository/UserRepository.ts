@@ -57,7 +57,7 @@ export class UserRepository {
       expiresIn: '7d',
     });
 
-    return Object({ token, data: user });
+    return Object({ status: '00', data: { ...user, token } });
   }
 
   async createUser({
