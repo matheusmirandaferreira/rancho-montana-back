@@ -73,8 +73,8 @@ export class PaceRepository {
       .toLowerCase()
       .replaceAll(' ', '_');
 
-    if (!(await repo.findOneBy({ pace_permalink: permalink })))
-      return new Error('Andamento não encontrado!');
+    if (await repo.findOneBy({ pace_permalink: permalink }))
+      return new Error('Andamento já existe!');
 
     pace.nmpace = nmpace;
     pace.pace_permalink = permalink;

@@ -73,8 +73,8 @@ export class ColorRepository {
       .toLowerCase()
       .replaceAll(' ', '_');
 
-    if (!(await repo.findOneBy({ color_permalink: permalink })))
-      return new Error('Cor não encontrada!');
+    if (await repo.findOneBy({ color_permalink: permalink }))
+      return new Error('Cor já existe!');
 
     color.nmcolor = nmcolor;
     color.color_permalink = permalink;

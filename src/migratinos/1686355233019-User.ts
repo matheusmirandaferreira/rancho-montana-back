@@ -1,5 +1,3 @@
-import { v4 } from 'uuid';
-import bcrypt from 'bcryptjs';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class User1686355233019 implements MigrationInterface {
@@ -38,16 +36,6 @@ export class User1686355233019 implements MigrationInterface {
           },
         ],
       })
-    );
-
-    const id = v4();
-    const name = 'Matheus Miranda Ferreira';
-    const email = 'matheusdemirandaferreira@gmail.com';
-    const salt = await bcrypt.genSalt(8);
-    const password = await bcrypt.hash('123456', salt);
-
-    await queryRunner.query(
-      `INSERT INTO "user" (UUIDUSER,NMUSER,EMAIL,PASSWORD) VALUES ('${id}', '${name}', '${email}', '${password}')`
     );
   }
 

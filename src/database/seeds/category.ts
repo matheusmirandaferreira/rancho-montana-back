@@ -6,17 +6,16 @@ export default class CategorySeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {
     const repository = dataSource.getRepository(Category);
 
-    if (await repository.count()) return;
-
-    await repository.insert([
-      {
-        category_permalink: 'muar',
-        nmcategory: 'Muar',
-      },
-      {
-        category_permalink: 'equino',
-        nmcategory: 'Equino',
-      },
-    ]);
+    if (!(await repository.exist()))
+      await repository.insert([
+        {
+          category_permalink: 'muar',
+          nmcategory: 'Muar',
+        },
+        {
+          category_permalink: 'equino',
+          nmcategory: 'Equino',
+        },
+      ]);
   }
 }

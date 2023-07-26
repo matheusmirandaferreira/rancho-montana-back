@@ -73,8 +73,8 @@ export class RaceRepository {
       .toLowerCase()
       .replaceAll(' ', '_');
 
-    if (!(await repo.findOneBy({ race_permalink: permalink })))
-      return new Error('Raça não encontrada!');
+    if (await repo.findOneBy({ race_permalink: permalink }))
+      return new Error('Raça já existe!');
 
     race.nmrace = nmrace;
     race.race_permalink = permalink;

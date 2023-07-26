@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './models/User';
 import { User1686355233019 } from './migratinos/1686355233019-User';
@@ -21,7 +19,7 @@ const options: DataSourceOptions & SeederOptions = {
   entities: [User, Pace, Race, Color, Category, Horse],
   migrations: [User1686355233019],
   migrationsTableName: process.env.DB_MIGRATION_TABLE_NAME,
-  seeds: ['src/database/seeds/**/*{.ts,.js}'],
+  seeds: ['src/database/seeds/*{.ts,.js}'],
 };
 
 export const AppDataSource = new DataSource(options);
