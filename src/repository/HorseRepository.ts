@@ -32,7 +32,7 @@ export class HorseRepository {
     if (!validate(uuidhorse)) return new Error('Informe um uuid válido');
 
     const horse = await repo.find({
-      relations: { color: true, pace: true, race: true },
+      relations: { color: true, pace: true, race: true, category: true },
       where: { uuidhorse },
     });
 
@@ -58,6 +58,8 @@ export class HorseRepository {
       uuidrace,
       nmhorse,
       description,
+      uuidcategory,
+      gender,
     } = props;
 
     if (!validate(uuidhorse)) return new Error('Informe um uuid válido');
@@ -71,13 +73,54 @@ export class HorseRepository {
         birthdate.split('/').reverse().join('-')
       ).toISOString();
 
+    const color = await AppDataSource.createQueryBuilder(Color, 'color')
+      .select()
+      .where('color.uuidcolor = :uuidcolor', { uuidcolor })
+      .getOne()
+      .catch(() => null);
+
+    const pace = await AppDataSource.createQueryBuilder(Pace, 'pace')
+      .select()
+      .where('pace.uuidpace = :uuidpace', { uuidpace })
+      .getOne()
+      .catch(() => null);
+
+    const race = await AppDataSource.createQueryBuilder(Race, 'race')
+      .select()
+      .where('race.uuidrace = :uuidrace', { uuidrace })
+      .getOne()
+      .catch(() => null);
+
+    const category = await AppDataSource.createQueryBuilder(
+      Category,
+      'category'
+    )
+      .select()
+      .where('category.uuidcategory = :uuidcategory', { uuidcategory })
+      .getOne()
+      .catch(() => null);
+
+    if (!color || !race || !pace || !category)
+      return new Error('Erro de validação', {
+        cause: fieldsErrors({ color, race, pace, category }, 'UUID inválido'),
+      });
+
     if (uuidcolor) horse.uuidcolor = uuidcolor;
 
     if (uuidpace) horse.uuidpace = uuidpace;
 
     if (uuidrace) horse.uuidrace = uuidrace;
 
+    if (uuidcategory) horse.uuidcategory = uuidcategory;
+
     if (nmhorse) horse.nmhorse = nmhorse;
+
+    if (gender)
+      if (gender !== 'M' && gender !== 'F')
+        return new Error('Erro de validação', {
+          cause: { gender: "O genêro deve ser 'M' ou 'F'" },
+        });
+      else horse.gender = gender;
 
     if (description) horse.description = description;
 
@@ -121,17 +164,20 @@ export class HorseRepository {
     const color = await AppDataSource.createQueryBuilder(Color, 'color')
       .select()
       .where('color.uuidcolor = :uuidcolor', { uuidcolor })
-      .getOne();
+      .getOne()
+      .catch(() => null);
 
     const pace = await AppDataSource.createQueryBuilder(Pace, 'pace')
       .select()
       .where('pace.uuidpace = :uuidpace', { uuidpace })
-      .getOne();
+      .getOne()
+      .catch(() => null);
 
     const race = await AppDataSource.createQueryBuilder(Race, 'race')
       .select()
       .where('race.uuidrace = :uuidrace', { uuidrace })
-      .getOne();
+      .getOne()
+      .catch(() => null);
 
     const category = await AppDataSource.createQueryBuilder(
       Category,
@@ -139,7 +185,8 @@ export class HorseRepository {
     )
       .select()
       .where('category.uuidcategory = :uuidcategory', { uuidcategory })
-      .getOne();
+      .getOne()
+      .catch(() => null);
 
     if (!color || !race || !pace || !category)
       return new Error('Erro de validação', {

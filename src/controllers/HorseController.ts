@@ -44,8 +44,16 @@ export class HorseController {
   async edit(req: Request, res: Response) {
     try {
       const { uuid: uuidhorse } = req.params;
-      const { birthdate, uuidcolor, uuidpace, uuidrace, nmhorse, description } =
-        req.body;
+      const {
+        birthdate,
+        uuidcolor,
+        uuidpace,
+        uuidrace,
+        nmhorse,
+        description,
+        uuidcategory,
+        gender,
+      } = req.body;
 
       const result = await repo.edit({
         uuidhorse,
@@ -55,6 +63,8 @@ export class HorseController {
         uuidrace,
         nmhorse,
         description,
+        uuidcategory,
+        gender,
       });
 
       if (result instanceof Error)

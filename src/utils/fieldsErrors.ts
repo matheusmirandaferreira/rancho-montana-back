@@ -8,7 +8,7 @@ export function fieldsErrors(
 
   nullableKeys.forEach((item) => {
     if (!keys[item]) {
-      errorsObj[item] = `Este campo é obrigatório`;
+      errorsObj[item] = message || `Este campo é obrigatório`;
     }
     if (keys[item] instanceof Array) {
       const arr = keys[item] as any[];
