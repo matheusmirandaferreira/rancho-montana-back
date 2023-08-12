@@ -4,13 +4,10 @@ node_modules/
 build/
 tmp/
 temp/
-.env.*
+
+.env*
 
 storage/public/*.jpg
 storage/public/*.svg
 storage/public/*.jpeg
 storage/public/*.png
-
-.flaskenv*
-!.env.project
-!.env.vault
