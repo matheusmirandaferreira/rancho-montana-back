@@ -49,4 +49,6 @@ routes.delete('/api/horse/:uuid', authMiddleware, new HorseController().delete);
 
 routes.get('/api/category', authMiddleware, new CategoryController().list);
 
+// routes.post('/api/dash-images', authMiddleware,);
+
 export { routes };
