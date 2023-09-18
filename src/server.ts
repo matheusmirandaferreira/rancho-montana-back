@@ -11,7 +11,7 @@ app.use(cors());
 app.use('/', routes);
 
 const main = () =>
-  Promise.resolve(AppDataSource.initialize())
+  Promise.resolve(!AppDataSource.isInitialized && AppDataSource.initialize())
     .then(() => {
       console.log('Database started successfully');
       Promise.resolve(runSeeders(AppDataSource)).catch((err) =>

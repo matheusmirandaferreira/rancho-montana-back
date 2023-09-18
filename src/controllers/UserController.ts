@@ -52,7 +52,7 @@ export class UserController {
       const result = await repo.createUser({
         nmuser,
         email,
-        password: String(password),
+        password,
       });
 
       if (result instanceof Error)

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import { HorseRepository } from '../repository/HorseRepository';
-import { uploadsMiddleware } from '../middleware/uploadMiddleware';
+
 import multer from 'multer';
 
 const repo = new HorseRepository();
 
-const upload = uploadsMiddleware.single('image');
-
 export class HorseController {
   async uploadImage(req: Request, res: Response) {
     const controller = (err) => {
+      console.log('err', err);
+
       if (err instanceof multer.MulterError) {
         return res.status(422).json({ message: err.message });
       } else if (err) {

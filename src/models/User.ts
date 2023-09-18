@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   PrimaryGeneratedColumn,
+  AfterInsert,
 } from 'typeorm';
 import bcrypt from 'bcryptjs';
 

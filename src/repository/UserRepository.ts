@@ -57,7 +57,7 @@ export class UserRepository {
       expiresIn: '7d',
     });
 
-    return Object({ status: '00', data: { ...user, token } });
+    return Object({ status: '00', data: { ...user.toJSON(), token } });
   }
 
   async createUser({
@@ -80,6 +80,8 @@ export class UserRepository {
     if ((await repo.findBy({ email })).length > 0) {
       return new Error('Usuário já existe');
     }
+
+    password = String(password);
 
     const user = repo.create({ nmuser, email, password });
 
@@ -112,7 +114,9 @@ export class UserRepository {
 
     if (newpassword && oldpassword) {
       if (!(await bcrypt.compare(String(oldpassword), user.password)))
-        return new Error('Senha inválida');
+        return new Error('Erro de validação', {
+          cause: fieldsErrors({ oldpassword: '' }, 'Senha atual é inválida'),
+        });
 
       const salt = await bcrypt.genSalt(8);
 
