@@ -11,6 +11,7 @@ import { CategoryController } from '../controllers/CategoryController';
 const routes = Router();
 
 routes.use(express.json());
+
 routes.use('/storage/public', express.static('storage/public'));
 
 routes.post('/api/auth', new UserController().login);
@@ -50,5 +51,7 @@ routes.delete('/api/horse/:uuid', authMiddleware, new HorseController().delete);
 routes.get('/api/category', authMiddleware, new CategoryController().list);
 
 // routes.post('/api/dash-images', authMiddleware,);
+
+routes.get('/', (req, res) => res.send('BEM VINDO AO RANCHO MONTANA'));
 
 export { routes };
