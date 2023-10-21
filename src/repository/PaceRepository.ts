@@ -37,7 +37,7 @@ export class PaceRepository {
 
     const permalink = normalizeDiacritics(nmpace)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ pace_permalink: permalink }))
       return new Error('Andamento já cadastrado!');
@@ -71,7 +71,7 @@ export class PaceRepository {
 
     const permalink = normalizeDiacritics(nmpace)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ pace_permalink: permalink }))
       return new Error('Andamento já existe!');

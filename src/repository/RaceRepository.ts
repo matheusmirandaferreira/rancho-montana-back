@@ -37,7 +37,7 @@ export class RaceRepository {
 
     const permalink = normalizeDiacritics(nmrace)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ race_permalink: permalink }))
       return new Error('Raça já cadastrada!');
@@ -71,7 +71,7 @@ export class RaceRepository {
 
     const permalink = normalizeDiacritics(nmrace)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ race_permalink: permalink }))
       return new Error('Raça já existe!');

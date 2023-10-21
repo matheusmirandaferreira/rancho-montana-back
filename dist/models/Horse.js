@@ -1,270 +1,92 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
-  return result;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Horse = void 0;
+const typeorm_1 = require("typeorm");
+const Race_1 = require("./Race");
+const Color_1 = require("./Color");
+const Pace_1 = require("./Pace");
+const Category_1 = require("./Category");
+const fs_1 = require("fs");
+let Horse = exports.Horse = class Horse {
+    toJSON() {
+        return Object.assign(Object.assign({}, this), { uuidcolor: undefined, uuidpace: undefined, uuidrace: undefined, uuidcategory: undefined, image: (0, fs_1.readdirSync)('storage/public/')
+                .filter((fn) => fn.startsWith(this.uuidhorse))
+                .map((image) => `${process.env.APP_BASE_URL}/storage/public/${image}`)[0] || false });
+    }
 };
-
-// src/models/Horse.ts
-var Horse_exports = {};
-__export(Horse_exports, {
-  Horse: () => Horse
-});
-module.exports = __toCommonJS(Horse_exports);
-var import_typeorm5 = require("typeorm");
-
-// src/models/Race.ts
-var import_typeorm = require("typeorm");
-var Race = class {
-  uuidrace;
-  nmrace;
-  race_permalink;
-  horses;
-  created_at;
-  updated_at;
-};
-__decorateClass([
-  (0, import_typeorm.PrimaryGeneratedColumn)("uuid")
-], Race.prototype, "uuidrace", 2);
-__decorateClass([
-  (0, import_typeorm.Column)({ unique: true })
-], Race.prototype, "nmrace", 2);
-__decorateClass([
-  (0, import_typeorm.Column)({ unique: true })
-], Race.prototype, "race_permalink", 2);
-__decorateClass([
-  (0, import_typeorm.OneToMany)(() => Horse, (horse) => horse.color, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-  }),
-  (0, import_typeorm.JoinColumn)({ name: "uuidhorse" })
-], Race.prototype, "horses", 2);
-__decorateClass([
-  (0, import_typeorm.CreateDateColumn)({ type: "timestamptz", generated: true })
-], Race.prototype, "created_at", 2);
-__decorateClass([
-  (0, import_typeorm.UpdateDateColumn)({ type: "timestamptz", generated: true })
-], Race.prototype, "updated_at", 2);
-Race = __decorateClass([
-  (0, import_typeorm.Entity)()
-], Race);
-
-// src/models/Color.ts
-var import_typeorm2 = require("typeorm");
-var Color = class {
-  uuidcolor;
-  nmcolor;
-  color_permalink;
-  horses;
-  created_at;
-  updated_at;
-};
-__decorateClass([
-  (0, import_typeorm2.PrimaryGeneratedColumn)("uuid")
-], Color.prototype, "uuidcolor", 2);
-__decorateClass([
-  (0, import_typeorm2.Column)({ unique: true })
-], Color.prototype, "nmcolor", 2);
-__decorateClass([
-  (0, import_typeorm2.Column)({ unique: true })
-], Color.prototype, "color_permalink", 2);
-__decorateClass([
-  (0, import_typeorm2.OneToMany)(() => Horse, (horse) => horse.color, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-  }),
-  (0, import_typeorm2.JoinColumn)({ name: "uuidhorse" })
-], Color.prototype, "horses", 2);
-__decorateClass([
-  (0, import_typeorm2.CreateDateColumn)({ type: "timestamptz", generated: true })
-], Color.prototype, "created_at", 2);
-__decorateClass([
-  (0, import_typeorm2.UpdateDateColumn)({ type: "timestamptz", generated: true })
-], Color.prototype, "updated_at", 2);
-Color = __decorateClass([
-  (0, import_typeorm2.Entity)()
-], Color);
-
-// src/models/Pace.ts
-var import_typeorm3 = require("typeorm");
-var Pace = class {
-  uuidpace;
-  nmpace;
-  pace_permalink;
-  horses;
-  created_at;
-  updated_at;
-};
-__decorateClass([
-  (0, import_typeorm3.PrimaryGeneratedColumn)("uuid")
-], Pace.prototype, "uuidpace", 2);
-__decorateClass([
-  (0, import_typeorm3.Column)({ unique: true })
-], Pace.prototype, "nmpace", 2);
-__decorateClass([
-  (0, import_typeorm3.Column)({ unique: true })
-], Pace.prototype, "pace_permalink", 2);
-__decorateClass([
-  (0, import_typeorm3.OneToMany)(() => Horse, (horse) => horse.color, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-  }),
-  (0, import_typeorm3.JoinColumn)({ name: "uuidhorse" })
-], Pace.prototype, "horses", 2);
-__decorateClass([
-  (0, import_typeorm3.CreateDateColumn)({ type: "timestamptz", generated: true })
-], Pace.prototype, "created_at", 2);
-__decorateClass([
-  (0, import_typeorm3.UpdateDateColumn)({ type: "timestamptz", generated: true })
-], Pace.prototype, "updated_at", 2);
-Pace = __decorateClass([
-  (0, import_typeorm3.Entity)()
-], Pace);
-
-// src/models/Category.ts
-var import_typeorm4 = require("typeorm");
-var Category = class {
-  uuidcategory;
-  nmcategory;
-  category_permalink;
-  horses;
-  created_at;
-  updated_at;
-};
-__decorateClass([
-  (0, import_typeorm4.PrimaryGeneratedColumn)("uuid")
-], Category.prototype, "uuidcategory", 2);
-__decorateClass([
-  (0, import_typeorm4.Column)({ unique: true })
-], Category.prototype, "nmcategory", 2);
-__decorateClass([
-  (0, import_typeorm4.Column)({ unique: true })
-], Category.prototype, "category_permalink", 2);
-__decorateClass([
-  (0, import_typeorm4.OneToMany)(() => Horse, (horse) => horse.category, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-  }),
-  (0, import_typeorm4.JoinColumn)({ name: "uuidhorse" })
-], Category.prototype, "horses", 2);
-__decorateClass([
-  (0, import_typeorm4.CreateDateColumn)({ type: "timestamptz", generated: true })
-], Category.prototype, "created_at", 2);
-__decorateClass([
-  (0, import_typeorm4.UpdateDateColumn)({ type: "timestamptz", generated: true })
-], Category.prototype, "updated_at", 2);
-Category = __decorateClass([
-  (0, import_typeorm4.Entity)()
-], Category);
-
-// src/models/Horse.ts
-var import_fs = require("fs");
-var Horse = class {
-  uuidhorse;
-  nmhorse;
-  description;
-  uuidcategory;
-  gender;
-  category;
-  birthdate;
-  uuidrace;
-  race;
-  uuidcolor;
-  color;
-  uuidpace;
-  pace;
-  created_at;
-  updated_at;
-  toJSON() {
-    return {
-      ...this,
-      uuidcolor: void 0,
-      uuidpace: void 0,
-      uuidrace: void 0,
-      uuidcategory: void 0,
-      image: (0, import_fs.readdirSync)("storage/public/").filter((fn) => fn.startsWith(this.uuidhorse)).map(
-        (image) => `${process.env.APP_BASE_URL}/storage/public/${image}`
-      )[0] || false
-    };
-  }
-};
-__decorateClass([
-  (0, import_typeorm5.PrimaryGeneratedColumn)("uuid")
-], Horse.prototype, "uuidhorse", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "nmhorse", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "description", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "uuidcategory", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "gender", 2);
-__decorateClass([
-  (0, import_typeorm5.ManyToOne)(() => Category),
-  (0, import_typeorm5.JoinColumn)({ name: "uuidcategory" })
-], Horse.prototype, "category", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)({ type: "date" })
-], Horse.prototype, "birthdate", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "uuidrace", 2);
-__decorateClass([
-  (0, import_typeorm5.ManyToOne)(() => Race),
-  (0, import_typeorm5.JoinColumn)({ name: "uuidrace" })
-], Horse.prototype, "race", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "uuidcolor", 2);
-__decorateClass([
-  (0, import_typeorm5.ManyToOne)(() => Color),
-  (0, import_typeorm5.JoinColumn)({ name: "uuidcolor" })
-], Horse.prototype, "color", 2);
-__decorateClass([
-  (0, import_typeorm5.Column)()
-], Horse.prototype, "uuidpace", 2);
-__decorateClass([
-  (0, import_typeorm5.ManyToOne)(() => Pace),
-  (0, import_typeorm5.JoinColumn)({ name: "uuidpace" })
-], Horse.prototype, "pace", 2);
-__decorateClass([
-  (0, import_typeorm5.CreateDateColumn)({ type: "timestamptz", generated: true })
-], Horse.prototype, "created_at", 2);
-__decorateClass([
-  (0, import_typeorm5.UpdateDateColumn)({ type: "timestamptz", generated: true })
-], Horse.prototype, "updated_at", 2);
-Horse = __decorateClass([
-  (0, import_typeorm5.Entity)()
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
+], Horse.prototype, "uuidhorse", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "nmhorse", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "uuidcategory", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "gender", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category),
+    (0, typeorm_1.JoinColumn)({ name: 'uuidcategory' }),
+    __metadata("design:type", Category_1.Category)
+], Horse.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date' }),
+    __metadata("design:type", String)
+], Horse.prototype, "birthdate", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "uuidrace", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Race_1.Race),
+    (0, typeorm_1.JoinColumn)({ name: 'uuidrace' }),
+    __metadata("design:type", Race_1.Race)
+], Horse.prototype, "race", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "uuidcolor", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Color_1.Color),
+    (0, typeorm_1.JoinColumn)({ name: 'uuidcolor' }),
+    __metadata("design:type", Color_1.Color)
+], Horse.prototype, "color", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Horse.prototype, "uuidpace", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Pace_1.Pace),
+    (0, typeorm_1.JoinColumn)({ name: 'uuidpace' }),
+    __metadata("design:type", Pace_1.Pace)
+], Horse.prototype, "pace", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz', generated: true }),
+    __metadata("design:type", String)
+], Horse.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ type: 'timestamptz', generated: true }),
+    __metadata("design:type", String)
+], Horse.prototype, "updated_at", void 0);
+exports.Horse = Horse = __decorate([
+    (0, typeorm_1.Entity)()
 ], Horse);
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  Horse
-});

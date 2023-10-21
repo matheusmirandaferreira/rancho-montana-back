@@ -37,7 +37,7 @@ export class ColorRepository {
 
     const permalink = normalizeDiacritics(nmcolor)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ color_permalink: permalink }))
       return new Error('Cor já cadastrada!');
@@ -71,7 +71,7 @@ export class ColorRepository {
 
     const permalink = normalizeDiacritics(nmcolor)
       .toLowerCase()
-      .replaceAll(' ', '_');
+      .replace(/ /g, '_');
 
     if (await repo.findOneBy({ color_permalink: permalink }))
       return new Error('Cor já existe!');

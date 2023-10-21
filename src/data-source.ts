@@ -10,7 +10,7 @@ import { Category } from './models/Category';
 import { SeederOptions } from 'typeorm-extension';
 
 const options: DataSourceOptions & SeederOptions = {
-  type: process.env.DB_CONNECTION as any,
+  type: 'postgres',
   host: process.env.DB_HOST,
   port: process.env.DB_PORT as unknown as number,
   username: process.env.DB_USERNAME,
