@@ -1,13 +1,13 @@
 {
   "name": "typeorm-new-version",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "type": "commonjs",
   "scripts": {
     "start": "env-cmd -f .env.$npm_config_env ts-node-dev src/server.ts --watch",
     "typeorm": "env-cmd -f .env.$npm_config_env typeorm-ts-node-commonjs",
     "seed": "env-cmd -f .env.$npm_config_env ts-node-dev ./node_modules/typeorm-extension/dist/cli/index.js seed",
-    "build": "tsc --outDir dist && cp .env.* package-lock.json package.json dist/"
+    "build": "tsc --outDir dist"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

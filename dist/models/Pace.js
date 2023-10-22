@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pace = void 0;
 const typeorm_1 = require("typeorm");
 const Horse_1 = require("./Horse");
-let Pace = exports.Pace = class Pace {
+let Pace = class Pace {
 };
+exports.Pace = Pace;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)

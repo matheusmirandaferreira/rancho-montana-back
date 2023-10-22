@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-let User = exports.User = class User {
+let User = class User {
     hashPassword() {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = yield bcryptjs_1.default.genSalt(8);
@@ -35,6 +35,7 @@ let User = exports.User = class User {
         return Object.assign(Object.assign({}, this), { password: undefined });
     }
 };
+exports.User = User;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)

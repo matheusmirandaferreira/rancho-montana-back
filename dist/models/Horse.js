@@ -16,13 +16,14 @@ const Color_1 = require("./Color");
 const Pace_1 = require("./Pace");
 const Category_1 = require("./Category");
 const fs_1 = require("fs");
-let Horse = exports.Horse = class Horse {
+let Horse = class Horse {
     toJSON() {
         return Object.assign(Object.assign({}, this), { uuidcolor: undefined, uuidpace: undefined, uuidrace: undefined, uuidcategory: undefined, image: (0, fs_1.readdirSync)('storage/public/')
                 .filter((fn) => fn.startsWith(this.uuidhorse))
                 .map((image) => `${process.env.APP_BASE_URL}/storage/public/${image}`)[0] || false });
     }
 };
+exports.Horse = Horse;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
