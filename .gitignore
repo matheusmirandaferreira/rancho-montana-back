@@ -11,3 +11,4 @@ storage/public/*.jpg
 storage/public/*.svg
 storage/public/*.jpeg
 storage/public/*.png
+*.pem

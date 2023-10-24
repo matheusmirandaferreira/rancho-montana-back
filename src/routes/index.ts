@@ -52,6 +52,6 @@ routes.get('/api/category', authMiddleware, new CategoryController().list);
 
 // routes.post('/api/dash-images', authMiddleware,);
 
-routes.get('/', (req, res) => res.send('BEM VINDO AO RANCHO MONTANA'));
+routes.get('/app', (req, res) => res.send('BEM VINDO AO RANCHO MONTANA'));
 
 export { routes };

@@ -64,4 +64,4 @@ routes.put('/api/horse/:uuid', authMiddleware_1.authMiddleware, new HorseControl
 routes.delete('/api/horse/:uuid', authMiddleware_1.authMiddleware, new HorseController_1.HorseController().delete);
 routes.get('/api/category', authMiddleware_1.authMiddleware, new CategoryController_1.CategoryController().list);
 // routes.post('/api/dash-images', authMiddleware,);
-routes.get('/', (req, res) => res.send('BEM VINDO AO RANCHO MONTANA'));
+routes.get('/app', (req, res) => res.send('BEM VINDO AO RANCHO MONTANA'));

@@ -1,13 +1,13 @@
 {
   "name": "typeorm-new-version",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Awesome project developed with TypeORM.",
   "type": "commonjs",
   "scripts": {
     "start": "env-cmd -f .env.$npm_config_env ts-node-dev src/server.ts --watch",
     "typeorm": "env-cmd -f .env.$npm_config_env typeorm-ts-node-commonjs",
     "seed": "env-cmd -f .env.$npm_config_env ts-node-dev ./node_modules/typeorm-extension/dist/cli/index.js seed",
-    "build": "tsc --outDir dist"
+    "build": "tsc --outDir dist && cp .env.* package-lock.json package.json ranchomontana-brt* dist/"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,6 +16,7 @@
     "env-cmd": "^10.1.0",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
+    "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
     "multer": "^1.4.5-lts.1",
     "normalize-text": "^2.4.1",
