@@ -28,4 +28,7 @@ const main = () =>
     })
     .catch((err) => console.log('Error on start database', err));
 
-server.listen(process.env.APP_PORT, main);
+(process.env.NODE_ENV === 'production' ? server : app).listen(
+  process.env.APP_PORT,
+  main
+);
