@@ -24,5 +24,4 @@ const main = () => Promise.resolve(!data_source_1.AppDataSource.isInitialized &&
     Promise.resolve((0, typeorm_extension_1.runSeeders)(data_source_1.AppDataSource)).catch((err) => console.log('ERROR ON RUN SEEDER', err));
 })
     .catch((err) => console.log('Error on start database', err));
-app.listen(process.env.APP_PORT, main);
 server.listen(process.env.APP_PORT, main);
