@@ -12,3 +12,4 @@ storage/public/*.svg
 storage/public/*.jpeg
 storage/public/*.png
 *.pem
+*.tar
